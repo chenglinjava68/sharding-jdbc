@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:rdb="http://www.dangdang.com/schema/ddframe/rdb" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.dangdang.com/schema/ddframe/rdb http://www.dangdang.com/schema/ddframe/rdb/rdb.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    
+    <util:properties id="jdbcConfiguration" location="classpath:jdbc.properties"/>
+    
+    <bean id="ds_0_bak" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/ds_0"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    <bean id="ds_1_bak" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/ds_1"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+    
+    <bean id="receive" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="#{jdbcConfiguration['jdbc.driverClassName']}"/>
+    </bean>
+    <bean id="receiveDateSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0001" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0001.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0002" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0002.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0003" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0003.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0004" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0004.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0005" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0005.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0006" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0006.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0007" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0007.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    <bean id="receive0008" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+        <property name="url" value="#{jdbcConfiguration['receive0008.jdbc.url']}"/>
+        <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
+        <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
+    </bean>
+    
+    
+    <rdb:strategy id="databaseShardingStrategy" sharding-columns="orderId"
+                  algorithm-class="com.dangdang.sharding.dao.algorithm.SingleKeyModuloDatabaseShardingAlgorithm"/>
+    <rdb:strategy id="tableShardingStrategy" sharding-columns="orderId"
+                  algorithm-class="com.dangdang.sharding.dao.algorithm.SingleKeyModuloTableShardingAlgorithm"/>
+    
+    <rdb:data-source id="shardingDataSource">
+        <rdb:sharding-rule
+                data-sources="receive0001, receive0002, receive0003, receive0004, receive0005, receive0006, receive0007, receive0008"
+                id-generator-class="com.dangdang.ddframe.rdb.sharding.id.generator.self.CommonSelfIdGenerator">
+            <rdb:table-rules>
+                <rdb:table-rule logic-table="orderinfo" actual-tables="orderinfo${0..511}"
+                                database-strategy="databaseShardingStrategy" table-strategy="tableShardingStrategy">
+                    <!--<rdb:auto-increment-column column-name="orderId"/>-->
+                </rdb:table-rule>
+            </rdb:table-rules>
+        </rdb:sharding-rule>
+    </rdb:data-source>
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="shardingDataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>
