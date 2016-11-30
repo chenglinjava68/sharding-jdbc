@@ -25,7 +25,7 @@
         <property name="password" value="root"/>
     </bean>
     
-    <bean id="receive" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close" >
+    <bean id="receive" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
         <property name="driverClassName" value="#{jdbcConfiguration['jdbc.driverClassName']}"/>
         <!-- 添加监控用途的statFilter -->
         <property name="filters" value="#{jdbcConfiguration['jdbc.filters']}"/>
@@ -52,47 +52,56 @@
                   value="#{jdbcConfiguration['jdbc.removeAbandonedTimeout']}"/> <!-- 1800秒，也就是30分钟 -->
         <property name="logAbandoned" value="#{jdbcConfiguration['jdbc.logAbandoned']}"/> <!-- 关闭abanded连接时输出错误日志 -->
     </bean>
-    <bean id="receiveDateSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receiveDateSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+          destroy-method="close" parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0001" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0001" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0001.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0002" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0002" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0002.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0003" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0003" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0003.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0004" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0004" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0004.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0005" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0005" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0005.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0006" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0006" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0006.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0007" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0007" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0007.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
     </bean>
-    <bean id="receive0008" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0008" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"
+          parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive0008.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
@@ -132,15 +141,15 @@
     <!-- 事务控制的业务方法配 -->
     <tx:advice id="singleTxAdvice" transaction-manager="singleTransactionManager">
         <tx:attributes>
-            <tx:method name="get*" read-only="true" />
-            <tx:method name="page*" read-only="true" />
-            <tx:method name="list*" read-only="true" />
-            <tx:method name="*" />
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="page*" read-only="true"/>
+            <tx:method name="list*" read-only="true"/>
+            <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>
     <!-- 事务控制拦截 -->
     <aop:config proxy-target-class="true">
         <aop:advisor pointcut="execution(* com.dangdang.sharding.service.*SingleService.*(..))"
-                     advice-ref="singleTxAdvice" />
+                     advice-ref="singleTxAdvice"/>
     </aop:config>
 </beans>

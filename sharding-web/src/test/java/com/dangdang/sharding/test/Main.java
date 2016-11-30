@@ -43,13 +43,9 @@ public class Main {
         long ss = System.currentTimeMillis();
 //        CommonSelfIdGenerator.setClock(AbstractClock.systemClock());
         AtomicInteger sequence = new AtomicInteger(0);
-        for (int i = 0; i < 10000; i++) {
-            CommonSelfIdGenerator.setClock(AbstractClock.systemClock());
-            long id = (Long) idGenerator.generateId();
-            int incr = sequence.getAndIncrement();
-            System.out.println(id + "--" + ss + "-" + incr);
-            logger.info("datasource:{},shardingPara：{},orderinfo:{}",((id %512)/64  + 1),id , id  % 512);
-
+        for (int i = 0; i < 9; i++) {
+           String jk="drop database ds_"+i+";";
+            System.out.println(jk);
         }
 
     }

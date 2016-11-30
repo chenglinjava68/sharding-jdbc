@@ -5,6 +5,7 @@ import com.dangdang.ddframe.rdb.sharding.id.generator.self.time.AbstractClock;
 import com.dangdang.sharding.domain.OrderInfoEntity;
 import com.dangdang.sharding.domain.ShardingCaculator;
 import com.dangdang.sharding.service.OrderInfoShardingService;
+import com.dangdang.sharding.service.OrderInfoSingleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,8 @@ public class OrderInfoController {
     final AtomicInteger sequence = new AtomicInteger(1000000000);
     @Autowired
     private OrderInfoShardingService orderInfoShardingService;
-
+    @Autowired
+    private OrderInfoSingleService orderInfoSingleService;
     @RequestMapping(value = "/sharding")
     public String insertOrderInfo() {
 //        long orderId = (Long) idGenerator.generateId();
@@ -62,7 +64,7 @@ public class OrderInfoController {
         entity.setMemberCode("licy13@lenovo.com");
         entity.setLenovoId("3345678965");
         entity.setOrderId(orderId);
-        orderInfoShardingService.insertSingleTsharding(entity);
+        orderInfoSingleService.insertSingleTsharding(entity);
         return String.valueOf(orderId);
     }
 }
