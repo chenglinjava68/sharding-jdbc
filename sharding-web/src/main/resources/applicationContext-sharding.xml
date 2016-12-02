@@ -52,7 +52,7 @@
                   value="#{jdbcConfiguration['jdbc.removeAbandonedTimeout']}"/> <!-- 1800秒，也就是30分钟 -->
         <property name="logAbandoned" value="#{jdbcConfiguration['jdbc.logAbandoned']}"/> <!-- 关闭abanded连接时输出错误日志 -->
     </bean>
-    <bean id="receiveDateSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
+    <bean id="receive0000" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
           destroy-method="close" parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
@@ -134,7 +134,7 @@
     
     <!--single 事务-->
     <bean id="singleTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="receiveDateSource"/>
+        <property name="dataSource" ref="receive0000"/>
     </bean>
     <!-- 全注解方式   需加上@Transactional -->
     <!--<tx:annotation-driven transaction-manager="singleTransactionManager"/>-->

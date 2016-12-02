@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="log.context.name" value="sharding-jdbc-example-mybatis" />
+    <property name="log.context.name" value="sharding-jdbc" />
     <property name="log.charset" value="UTF-8" />
     <property name="log.pattern" value="[%-5level] %date --%thread-- %msg %n" />
 
@@ -14,7 +14,7 @@
     </appender>
 
     <root>
-        <level value="ERROR" />
+        <level value="info" />
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>

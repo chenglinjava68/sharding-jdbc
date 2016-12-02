@@ -44,7 +44,7 @@ public class OrderInfoController {
         entity.setLenovoId("3345678965");
         entity.setOrderId(orderId);
         orderInfoShardingService.insert(entity);
-        logger.info("orderId:{}",orderId);
+//        logger.info("orderId:{}",orderId);
         return String.valueOf(orderId);
     }
 

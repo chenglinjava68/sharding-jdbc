@@ -29,20 +29,23 @@ import java.util.LinkedHashSet;
 
 public final class SingleKeyModuloTableShardingAlgorithm implements SingleKeyTableShardingAlgorithm<Long> {
     private static final Logger logger = LoggerFactory.getLogger(SingleKeyModuloTableShardingAlgorithm.class);
-
+    int i=1;
     @Override
     public String doEqualSharding(final Collection<String> availableTargetNames, final ShardingValue<Long> shardingValue) {
-        for (String each : availableTargetNames) {
-            if (each.equals(caculateTableName(shardingValue.getValue()))) {
-                return each;
-            }
-        }
-        throw new UnsupportedOperationException();
+//        for (String each : availableTargetNames) {
+//            logger.info("availableTargetNames:{} each:{}",availableTargetNames,each);
+//            if (each.equals(caculateTableName(shardingValue.getValue()))) {
+//                return each;
+//            }
+//        }
+        logger.info("i:{} table:{},shardingPara：{}",i++,caculateTableName(shardingValue.getValue()),shardingValue.getValue());
+
+        return caculateTableName(shardingValue.getValue());
+//        throw new UnsupportedOperationException();
     }
 
     private String caculateTableName(Long shardingPara) {
         if (shardingPara >= 0) {
-            logger.info("datasource:{},shardingPara：{},orderinfo:{}",(shardingPara % 512/64 + 1),shardingPara , shardingPara % 512);
             return "orderinfo" + (shardingPara % 512);
         }
         return null;

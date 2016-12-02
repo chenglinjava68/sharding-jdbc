@@ -20,7 +20,7 @@
     
     <!--single-->
     <bean id="sqlSingleSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="receiveDateSource"/>
+        <property name="dataSource" ref="receive0000"/>
         <property name="mapperLocations" value="classpath*:sqlsinglemap/*.xml"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
         <property name="typeAliasesPackage" value="com.dangdang.sharding.domain"/>

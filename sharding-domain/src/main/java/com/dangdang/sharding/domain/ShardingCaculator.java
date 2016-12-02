@@ -189,7 +189,7 @@ public class ShardingCaculator {
             }
             long increment = currentOrderInfo.get("increment");
             orderIdNo = mergeIncrement(increment, currentTime);
-            logger.info("orderIdNo:{}-increment:{}", orderIdNo, increment);
+//            logger.info("orderIdNo:{}-increment:{}", orderIdNo, increment);
         }
         return orderIdNo;
     }
@@ -218,7 +218,7 @@ public class ShardingCaculator {
         }).start();*/
       for (int i=1;i<9;i++){
           for (int s = (i-1)*64; s < 64*i; s++) {
-              String ss="DROP TABLE IF EXISTS `db_"+i+"`.`orderinfo"+s+"`;CREATE TABLE `db_"+i+"`.`orderinfo"+s+"` (  `orderId` bigint(20) NOT NULL,  `orderInfo` text,  `status` int(11) DEFAULT NULL,  `createTime` datetime DEFAULT NULL,  `cartInfo` text,  `readTime` datetime DEFAULT NULL,  `readTimes` int(11) DEFAULT '0',  `memberId` varchar(50) DEFAULT NULL,  `platId` varchar(50) DEFAULT NULL,  `lenovoId` bigint(20) DEFAULT NULL,  `merchantId` varchar(50) DEFAULT NULL,  `sourceId` varchar(50) DEFAULT NULL,  `memberCode` varchar(50) DEFAULT NULL,`UpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (`orderId`),KEY `idx_read_status` (`readTimes`,`status`) USING BTREE,KEY `index_status` (`status`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
+              String ss="DROP TABLE IF EXISTS `ds_"+i+"`.`orderinfo"+getNumberWithZeroSuffix(s)+"`;CREATE TABLE `ds_"+i+"`.`orderinfo"+getNumberWithZeroSuffix(s)+"` (  `orderId` bigint(20) NOT NULL,  `orderInfo` text,  `status` int(11) DEFAULT NULL,  `createTime` datetime DEFAULT NULL,  `cartInfo` text,  `readTime` datetime DEFAULT NULL,  `readTimes` int(11) DEFAULT '0',  `memberId` varchar(50) DEFAULT NULL,  `platId` varchar(50) DEFAULT NULL,  `lenovoId` bigint(20) DEFAULT NULL,  `merchantId` varchar(50) DEFAULT NULL,  `sourceId` varchar(50) DEFAULT NULL,  `memberCode` varchar(50) DEFAULT NULL,`UpdateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,PRIMARY KEY (`orderId`),KEY `idx_read_status` (`readTimes`,`status`) USING BTREE,KEY `index_status` (`status`) USING BTREE) ENGINE=InnoDB DEFAULT CHARSET=utf8;";
               System.out.println(ss);
           }
       }

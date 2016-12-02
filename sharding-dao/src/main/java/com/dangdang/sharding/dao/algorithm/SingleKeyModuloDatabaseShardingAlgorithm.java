@@ -28,17 +28,41 @@ import java.util.LinkedHashSet;
 
 public final class SingleKeyModuloDatabaseShardingAlgorithm implements SingleKeyDatabaseShardingAlgorithm<Long> {
     private static final Logger logger = LoggerFactory.getLogger(SingleKeyModuloTableShardingAlgorithm.class);
-
+    int i=1;
     @Override
     public String doEqualSharding(final Collection<String> availableTargetNames, final ShardingValue<Long> shardingValue) {
-        for (String each : availableTargetNames) {
+        /*for (String each : availableTargetNames) {
+            logger.info("availableTargetNames:{} each:{}",availableTargetNames,each);
             if (each.endsWith((shardingValue.getValue() % 512/64 + 1) + "")) {
                 return each;
             }
-        }
-        throw new UnsupportedOperationException();
+        }*/
+        logger.info("i:{} datasource:{},shardingPara：{}",i++,caculateSchemaName(shardingValue.getValue()),shardingValue.getValue() );
+        return caculateSchemaName(shardingValue.getValue());
+//        throw new UnsupportedOperationException();
     }
-
+    private  String caculateSchemaName(Long shardingPara) {
+        if (shardingPara >= 0) {
+            return "receive" + getNumberWithZeroSuffix((shardingPara  % 512) / 64 + 1);
+        }
+        return null;
+    }
+    /**
+     * 4 位数字补 0
+     *
+     * @param number
+     * @return
+     */
+    private String getNumberWithZeroSuffix(long number) {
+        if (number >= 100) {
+            return "0" + number;
+        } else if (number >= 10) {
+            return "00" + number;
+        } else if (number >= 0) {
+            return "000" + number;
+        }
+        return null;
+    }
     @Override
     public Collection<String> doInSharding(final Collection<String> availableTargetNames, final ShardingValue<Long> shardingValue) {
         Collection<String> result = new LinkedHashSet<>(availableTargetNames.size());

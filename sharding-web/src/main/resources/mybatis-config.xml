@@ -3,11 +3,15 @@
         "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--<settings>-->
+        <!--<setting name="logImpl" value="LOG4J2"/>-->
+    <!--</settings>-->
     
     <typeAliases>
         <!--<typeAlias alias="user" type="User"/>-->
         <package name="com.dangdang.sharding.domain"/>
     </typeAliases>
+   
 
 
 

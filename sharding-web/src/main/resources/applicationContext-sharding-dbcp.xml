@@ -27,7 +27,7 @@
     <bean id="receive" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="#{jdbcConfiguration['jdbc.driverClassName']}"/>
     </bean>
-    <bean id="receiveDateSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
+    <bean id="receive0000" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" parent="receive">
         <property name="url" value="#{jdbcConfiguration['receive.jdbc.url']}"/>
         <property name="username" value="#{jdbcConfiguration['jdbc.username']}"/>
         <property name="password" value="#{jdbcConfiguration['jdbc.password']}"/>
